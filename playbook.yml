@@ -1,4 +1,16 @@
 - hosts: all
   gather_facts: false
   tasks:
-    - ping:
+    # be sure to set the right DOCKER envs
+    - name: show DOCKER env
+      shell: env | grep DOCKER
+      register: output
+      
+    - debug: var=output.stdout_lines
+    
+    - name: run a Docker container
+      docker_container:
+        name: alpine-ansible
+        image: alpine
+        command: /bin/ash
+    
